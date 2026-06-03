@@ -1,0 +1,192 @@
+[
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.EmergencyAlertController",
+    "Method": "GetById",
+    "RelativePath": "api/EmergencyAlert/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.EmergencyAlertController",
+    "Method": "GetAll",
+    "RelativePath": "api/EmergencyAlert/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.EmergencyAlertController",
+    "Method": "Create",
+    "RelativePath": "api/EmergencyAlert/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.Requests.CreateEmergencyAlertDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.EmergencyAlertController",
+    "Method": "Resolve",
+    "RelativePath": "api/EmergencyAlert/resolve",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.Requests.ResolveEmergencyAlertDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
+    "Method": "GetById",
+    "RelativePath": "api/SafeReach/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
+    "Method": "Acknowledge",
+    "RelativePath": "api/SafeReach/acknowledge",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.AcknowledgeSafeReachDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
+    "Method": "GetAll",
+    "RelativePath": "api/SafeReach/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
+    "Method": "Create",
+    "RelativePath": "api/SafeReach/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.CreateSafeReachDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
+    "Method": "Escalate",
+    "RelativePath": "api/SafeReach/escalate/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "GetById",
+    "RelativePath": "api/WellnessRequest/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "GetAllRequests",
+    "RelativePath": "api/WellnessRequest/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "CreateRequest",
+    "RelativePath": "api/WellnessRequest/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.WellnessSafetyService.DTOs.Requests.CreateWellnessRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "UpdateStatus",
+    "RelativePath": "api/WellnessRequest/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.WellnessSafetyService.DTOs.Requests.UpdateWellnessRequestStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

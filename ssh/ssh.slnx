@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../ssh.complaintservice/ssh.complaintservice.csproj" />
+  <Project Path="../ssh.Safety &amp; Wellness Service/ssh.Safety &amp; Wellness Service.csproj" />
+  <Project Path="ssh.authservice.csproj" />
+</Solution>

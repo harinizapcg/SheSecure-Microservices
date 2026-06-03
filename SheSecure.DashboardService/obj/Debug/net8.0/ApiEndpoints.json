@@ -1,0 +1,42 @@
+[
+  {
+    "ContainingType": "SheSecure.DashboardService.Controllers.DashboardController",
+    "Method": "GetComplaintAnalytics",
+    "RelativePath": "api/Dashboard/complaints",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.DashboardService.Controllers.DashboardController",
+    "Method": "GetEmergencyAnalytics",
+    "RelativePath": "api/Dashboard/emergency",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.DashboardService.Controllers.DashboardController",
+    "Method": "GetStats",
+    "RelativePath": "api/Dashboard/stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.DashboardService.Controllers.DashboardController",
+    "Method": "GetWellnessAnalytics",
+    "RelativePath": "api/Dashboard/wellness",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "..\\ssh.complaintservice\\ssh.complaintservice.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ssh.authservice.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
