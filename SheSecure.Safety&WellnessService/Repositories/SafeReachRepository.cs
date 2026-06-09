@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SheSecure.Safety_WellnessService.Entities;
 using SheSecure.Safety_WellnessService.Interfaces;
+using SheSecure.Safety_WellnessService.Data;
 
 namespace SheSecure.Safety_WellnessService.Repositories
 {

@@ -14,7 +14,7 @@ namespace SheSecure.NotificationService.Interfaces
 
         Task<List<NotificationResponseDTO>>
             GetEmployeeNotificationsAsync(
-                int employeeId);
+                string employeeId);
 
         Task MarkAsReadAsync(
             int notificationId);

@@ -1,6 +1,0 @@
-@SheSecure.NotificationService_HostAddress = http://localhost:5216
-
-GET {{SheSecure.NotificationService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

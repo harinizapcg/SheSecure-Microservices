@@ -34,6 +34,7 @@ namespace SheSecure.NotificationService.Services
             return new NotificationResponseDTO
             {
                 Id = created.Id,
+                EmployeeId = created.EmployeeId.ToString(),
                 Title = created.Title,
                 Message = created.Message,
                 Type = created.Type,
@@ -52,6 +53,7 @@ namespace SheSecure.NotificationService.Services
                 new NotificationResponseDTO
                 {
                     Id = x.Id,
+                    EmployeeId = x.EmployeeId.ToString(),
                     Title = x.Title,
                     Message = x.Message,
                     Type = x.Type,
@@ -62,7 +64,7 @@ namespace SheSecure.NotificationService.Services
 
         public async Task<List<NotificationResponseDTO>>
             GetEmployeeNotificationsAsync(
-                int employeeId)
+                string employeeId)
         {
             var notifications =
                 await _repository.GetEmployeeNotificationsAsync(
@@ -72,6 +74,7 @@ namespace SheSecure.NotificationService.Services
                 new NotificationResponseDTO
                 {
                     Id = x.Id,
+                    EmployeeId = x.EmployeeId.ToString(),
                     Title = x.Title,
                     Message = x.Message,
                     Type = x.Type,

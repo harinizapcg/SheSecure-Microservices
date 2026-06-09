@@ -25,26 +25,29 @@ namespace SheSecure.NotificationService.Repositories
             return notification;
         }
 
-        public async Task<List<Notification>>
-            GetAllNotificationsAsync()
+        public async Task<List<Notification>> GetAllNotificationsAsync()
         {
             return await _context.Notifications
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<List<Notification>>
-            GetEmployeeNotificationsAsync(
-                int employeeId)
+        public async Task<List<Notification>> GetEmployeeNotificationsAsync(
+            string employeeId)
         {
+            if (!int.TryParse(employeeId, out var empId))
+            {
+                return new List<Notification>();
+            }
+
             return await _context.Notifications
-                .Where(x => x.EmployeeId == employeeId)
+                .Where(x => x.EmployeeId == empId)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
         }
 
-        public async Task<Notification?>
-            GetByIdAsync(int id)
+        public async Task<Notification?> GetByIdAsync(
+            int id)
         {
             return await _context.Notifications
                 .FirstOrDefaultAsync(x => x.Id == id);

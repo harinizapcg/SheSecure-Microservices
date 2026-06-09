@@ -58,6 +58,144 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "GetAll",
+    "RelativePath": "api/Mood/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "GetBurnoutRisk",
+    "RelativePath": "api/Mood/burnout-risk/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "Create",
+    "RelativePath": "api/Mood/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.CreateMoodLogDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "GetEmployeeLogs",
+    "RelativePath": "api/Mood/employee/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "GetRecommendation",
+    "RelativePath": "api/Mood/recommendation/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodController",
+    "Method": "GetMoodTrend",
+    "RelativePath": "api/Mood/trend/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodLogController",
+    "Method": "GetLogs",
+    "RelativePath": "api/MoodLog/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodLogController",
+    "Method": "AddLog",
+    "RelativePath": "api/MoodLog/add",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SheSecure.Safety_WellnessService.DTOs.CreateMoodLogDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.Safety_WellnessService.Controllers.MoodLogController",
+    "Method": "GetBurnoutScore",
+    "RelativePath": "api/MoodLog/burnout-score/{employeeId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "employeeId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SheSecure.Safety_WellnessService.Controllers.SafeReachController",
     "Method": "GetById",
     "RelativePath": "api/SafeReach/{id}",

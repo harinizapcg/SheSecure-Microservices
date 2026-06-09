@@ -18,10 +18,8 @@ builder.Services.AddDbContext<NotificationDbContext>(
             builder.Configuration.GetConnectionString(
                 "DefaultConnection")));
 
-builder.Services.AddScoped<
-    INotificationRepository,
-    NotificationRepository>();
-
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<
     INotificationService,
     NotificationService>();

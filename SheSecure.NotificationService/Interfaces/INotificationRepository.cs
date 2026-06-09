@@ -10,10 +10,9 @@ namespace SheSecure.NotificationService.Interfaces
         Task<List<Notification>> GetAllNotificationsAsync();
 
         Task<List<Notification>> GetEmployeeNotificationsAsync(
-            int employeeId);
+            string employeeId);
 
-        Task<Notification?> GetByIdAsync(
-            int id);
+        Task<Notification?> GetByIdAsync(int id);
 
         Task UpdateNotificationAsync(
             Notification notification);

@@ -92,6 +92,35 @@ namespace SheSecure.Safety_WellnessService.Migrations
                     b.ToTable("SafeReachChecks");
                 });
 
+            modelBuilder.Entity("SheSecure.Safety_WellnessService.Models.MoodLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MoodLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StressLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MoodLogs");
+                });
+
             modelBuilder.Entity("SheSecure.WellnessSafetyService.Entities.WellnessRequest", b =>
                 {
                     b.Property<int>("Id")

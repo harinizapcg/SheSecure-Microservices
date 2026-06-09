@@ -36,7 +36,7 @@ namespace SheSecure.NotificationService.Controllers
         [HttpGet("employee/{employeeId}")]
         public async Task<IActionResult>
             GetEmployeeNotifications(
-                int employeeId)
+                string employeeId)
         {
             return Ok(
                 await _service

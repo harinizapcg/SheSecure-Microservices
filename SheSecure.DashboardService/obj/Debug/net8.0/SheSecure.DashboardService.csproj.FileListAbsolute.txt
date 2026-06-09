@@ -145,3 +145,4 @@ C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecur
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.DashboardService\obj\Debug\net8.0\SheSecure.DashboardService.pdb
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.DashboardService\obj\Debug\net8.0\SheSecure.DashboardService.genruntimeconfig.cache
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.DashboardService\obj\Debug\net8.0\ref\SheSecure.DashboardService.dll
+C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.DashboardService\obj\Debug\net8.0\SheSecure.DashboardService.sourcelink.json

@@ -145,3 +145,4 @@ C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecur
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.NotificationService\obj\Debug\net8.0\SheSecure.NotificationService.pdb
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.NotificationService\obj\Debug\net8.0\SheSecure.NotificationService.genruntimeconfig.cache
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.NotificationService\obj\Debug\net8.0\ref\SheSecure.NotificationService.dll
+C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.NotificationService\obj\Debug\net8.0\SheSecure.NotificationService.sourcelink.json

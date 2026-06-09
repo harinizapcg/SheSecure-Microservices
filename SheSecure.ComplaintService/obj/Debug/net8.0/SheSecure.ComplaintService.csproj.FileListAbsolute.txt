@@ -146,3 +146,4 @@ C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecur
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.ComplaintService\obj\Debug\net8.0\SheSecure.ComplaintService.pdb
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.ComplaintService\obj\Debug\net8.0\SheSecure.ComplaintService.genruntimeconfig.cache
 C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.ComplaintService\obj\Debug\net8.0\ref\SheSecure.ComplaintService.dll
+C:\Users\HariniBanda\OneDrive - ZapCom Solutions Pvt. ltd\Desktop\POC_2\SheSecure.ComplaintService\obj\Debug\net8.0\SheSecure.ComplaintService.sourcelink.json
