@@ -1,6 +1,0 @@
-@SheSecure.ApiGateway_HostAddress = http://localhost:5115
-
-GET {{SheSecure.ApiGateway_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

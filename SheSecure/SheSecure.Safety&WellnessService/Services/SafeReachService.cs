@@ -1,8 +1,8 @@
-﻿using Hangfire;
+using Hangfire;
 using SheSecure.Safety_WellnessService.DTOs;
 using SheSecure.Safety_WellnessService.Entities;
-using SheSecure.Safety_WellnessService.Interfaces;
 using SheSecure.Safety_WellnessService.Jobs;
+using SheSecure.Safety_WellnessService.Interfaces;
 
 namespace SheSecure.Safety_WellnessService.Services
 {
@@ -10,14 +10,12 @@ namespace SheSecure.Safety_WellnessService.Services
     {
         private readonly ISafeReachRepository _repository;
 
-        public SafeReachService(
-            ISafeReachRepository repository)
+        public SafeReachService(ISafeReachRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task CreateAsync(
-            CreateSafeReachDTO dto)
+        public async Task CreateAsync(CreateSafeReachDTO dto)
         {
             var check = new SafeReachCheck
             {
@@ -30,10 +28,9 @@ namespace SheSecure.Safety_WellnessService.Services
             await _repository.CreateAsync(check);
 
             // Normalize to UTC
-            var expectedUtc =
-                dto.ExpectedArrivalTime.Kind == DateTimeKind.Utc
-                    ? dto.ExpectedArrivalTime
-                    : dto.ExpectedArrivalTime.ToUniversalTime();
+            var expectedUtc = dto.ExpectedArrivalTime.Kind == DateTimeKind.Utc
+                ? dto.ExpectedArrivalTime
+                : dto.ExpectedArrivalTime.ToUniversalTime();
 
             var now = DateTime.UtcNow;
 
@@ -47,13 +44,13 @@ namespace SheSecure.Safety_WellnessService.Services
             }
             else
             {
+                // Already past — fire immediately
                 BackgroundJob.Enqueue<SafeReachReminderJob>(
                     job => job.SendReminderAsync(check.Id));
             }
 
-            // Job 2 — escalation 30 min after expected arrival
-            var escalationDelay =
-                expectedUtc - now + TimeSpan.FromMinutes(30);
+            // Job 2 — escalation after arrival time + 30 min grace
+            var escalationDelay = expectedUtc - now + TimeSpan.FromMinutes(30);
             if (escalationDelay > TimeSpan.Zero)
             {
                 BackgroundJob.Schedule<SafeReachReminderJob>(
@@ -68,16 +65,12 @@ namespace SheSecure.Safety_WellnessService.Services
             }
         }
 
-        public async Task AcknowledgeAsync(
-            AcknowledgeSafeReachDTO dto)
+        public async Task AcknowledgeAsync(AcknowledgeSafeReachDTO dto)
         {
-            var check =
-                await _repository.GetByIdAsync(
-                    dto.SafeReachId);
+            var check = await _repository.GetByIdAsync(dto.SafeReachId);
 
             if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
+                throw new Exception("Safe reach check not found");
 
             check.IsAcknowledged = true;
             check.AcknowledgedAt = DateTime.UtcNow;
@@ -86,36 +79,27 @@ namespace SheSecure.Safety_WellnessService.Services
             await _repository.UpdateAsync(check);
         }
 
-        public async Task EscalateAsync(int id)
-        {
-            var check =
-                await _repository.GetByIdAsync(id);
-
-            if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
-
-            if (check.IsAcknowledged)
-                throw new Exception(
-                    "Employee already acknowledged");
-
-            check.Status = "Escalated";
-            await _repository.UpdateAsync(check);
-        }
-
         public async Task<object> GetAllAsync()
-            => await _repository.GetAllAsync();
+        {
+            var list = await _repository.GetAllAsync();
+            return list;
+        }
 
         public async Task<object> GetByIdAsync(int id)
         {
-            var check =
-                await _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task EscalateAsync(int id)
+        {
+            var check = await _repository.GetByIdAsync(id);
 
             if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
+                throw new Exception("Safe reach check not found");
 
-            return check;
+            check.Status = "Escalated";
+
+            await _repository.UpdateAsync(check);
         }
     }
 }
