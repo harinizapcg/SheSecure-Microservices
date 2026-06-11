@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SheSecure.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea3628981fedc4ba87a2c9e236bccc516eb950cc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e2fa5d5e7f069a7cd131e5c33eeaac6cfe03945")]
 [assembly: System.Reflection.AssemblyProductAttribute("SheSecure.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SheSecure.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
