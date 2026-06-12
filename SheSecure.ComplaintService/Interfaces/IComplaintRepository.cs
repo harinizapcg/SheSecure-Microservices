@@ -8,8 +8,12 @@ namespace SheSecure.ComplaintService.Interfaces
 
         Task<List<Complaint>> GetAllComplaintsAsync();
 
-        Task<Complaint> GetComplaintByIdAsync(int id);
-        Task<List<Complaint>> GetComplaintsByEmployeeIdAsync(string employeeId);
+        Task<Complaint?> GetComplaintByIdAsync(int id);
+
+        Task<List<Complaint>> GetComplaintsByUserIdAsync(string userId);
+
         Task UpdateComplaintAsync(Complaint complaint);
+
+        Task<bool> DeleteComplaintAsync(int id);
     }
 }

@@ -2,171 +2,184 @@
 using SheSecure.ComplaintService.DTOs.Responses;
 using SheSecure.ComplaintService.Entities;
 using SheSecure.ComplaintService.Interfaces;
-using System.Text;
-using System.Text.Json;
 
 namespace SheSecure.ComplaintService.Services
 {
     public class ComplaintService : IComplaintService
     {
         private readonly IComplaintRepository _repository;
-        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ComplaintService(
-            IComplaintRepository repository,
-            IHttpClientFactory httpClientFactory)
+        // Roles that can see all complaints
+        private static readonly HashSet<string> PrivilegedRoles =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                "HR", "Security", "Manager", "Admin"
+            };
+
+        public ComplaintService(IComplaintRepository repository)
         {
             _repository = repository;
-            _httpClientFactory = httpClientFactory;
         }
 
+        // ===================== CREATE =====================
         public async Task<ComplaintResponseDTO> CreateComplaintAsync(
             CreateComplaintDTO dto,
-            string employeeId)
+            string userId)
         {
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new Exception("UserId cannot be null.");
+
             var complaint = new Complaint
             {
-                // If anonymous, store 0 so real ID is never saved
-                EmployeeId = dto.IsAnonymous ? "0" : employeeId,
+                UserId = dto.IsAnonymous ? "0" : userId,
                 Category = dto.Category,
                 Subject = dto.Subject,
                 Description = dto.Description,
                 Priority = dto.Priority,
                 IsAnonymous = dto.IsAnonymous,
                 Status = "Submitted",
-                ComplaintNumber = GenerateComplaintNumber()
+                ComplaintNumber = $"CMP-{DateTime.UtcNow.Ticks}"
             };
 
             var created = await _repository.CreateComplaintAsync(complaint);
-
-            // Notify employee that complaint was received (skip if anonymous)
-            if (!dto.IsAnonymous)
-            {
-                await SendNotificationAsync(
-                    employeeId: employeeId.ToString(),
-                    title: "Complaint Submitted",
-                    message: $"Your complaint {created.ComplaintNumber} has been successfully submitted.",
-                    type: "Complaint"
-                );
-            }
-
-            return MapToResponse(created);
+            return Map(created);
         }
 
-        public async Task<List<ComplaintResponseDTO>> GetAllComplaintsAsync()
+        // ===================== GET ALL (ROLE BASED) =====================
+        // Employee      → only their own complaints
+        // HR/Security/Manager/Admin → all complaints
+        public async Task<List<ComplaintResponseDTO>> GetAllComplaintsAsync(
+            string role,
+            string userId)
         {
             var complaints = await _repository.GetAllComplaintsAsync();
 
-            return complaints.Select(MapToResponse).ToList();
-        }
-        public async Task<List<ComplaintResponseDTO>> GetMyComplaintsAsync(string employeeId)
-        {
-            var complaints =
-                await _repository.GetComplaintsByEmployeeIdAsync(employeeId);
+            if (!PrivilegedRoles.Contains(role))
+            {
+                // Employee or unknown role: filter to own complaints only
+                complaints = complaints
+                    .Where(c => c.UserId == userId)
+                    .ToList();
+            }
 
-            return complaints
-                .Select(MapToResponse)
-                .ToList();
+            return complaints.Select(Map).ToList();
         }
-        public async Task<ComplaintResponseDTO> GetComplaintByIdAsync(int id)
+
+        // ===================== GET MY COMPLAINTS =====================
+        public async Task<List<ComplaintResponseDTO>> GetMyComplaintsAsync(string userId)
+        {
+            var complaints = await _repository.GetComplaintsByUserIdAsync(userId);
+            return complaints.Select(Map).ToList();
+        }
+
+        // ===================== GET BY ID (ROLE BASED) =====================
+        public async Task<ComplaintResponseDTO?> GetComplaintByIdAsync(
+            int id,
+            string role,
+            string userId)
         {
             var complaint = await _repository.GetComplaintByIdAsync(id);
 
             if (complaint == null)
-                throw new Exception("Complaint not found");
+                return null;
 
-            return MapToResponse(complaint);
+            // Employee can only see their own complaint
+            if (!PrivilegedRoles.Contains(role) && complaint.UserId != userId)
+                return null;
+
+            return Map(complaint);
         }
 
+        // ===================== UPDATE STATUS =====================
+        // HR, Security, Manager, Admin only (enforced at controller too)
         public async Task UpdateComplaintStatusAsync(
-            UpdateComplaintStatusDTO dto)
+            UpdateComplaintStatusDTO dto,
+            string role)
         {
-            var complaint =
-                await _repository.GetComplaintByIdAsync(dto.ComplaintId);
+            if (!PrivilegedRoles.Contains(role))
+                throw new UnauthorizedAccessException("Not allowed.");
+
+            var complaint = await _repository.GetComplaintByIdAsync(dto.ComplaintId);
 
             if (complaint == null)
-                throw new Exception("Complaint not found");
+                throw new Exception("Complaint not found.");
 
             complaint.Status = dto.Status;
             complaint.ResolutionNotes = dto.ResolutionNotes;
-            complaint.UpdatedAt = DateTime.UtcNow;
 
             await _repository.UpdateComplaintAsync(complaint);
-
-            // Notify employee about status change (skip if anonymous)
-            if (!complaint.IsAnonymous && complaint.EmployeeId != "0")
-            {
-                await SendNotificationAsync(
-                    employeeId: complaint.EmployeeId.ToString(),
-                    title: "Complaint Status Updated",
-                    message: $"Your complaint {complaint.ComplaintNumber} status has been updated to '{dto.Status}'.",
-                    type: "Complaint"
-                );
-            }
         }
 
-        public async Task AssignComplaintAsync(AssignComplaintDTO dto)
+        // ===================== ASSIGN =====================
+        // HR, Security, Manager, Admin only (enforced at controller too)
+        public async Task AssignComplaintAsync(
+            AssignComplaintDTO dto,
+            string role)
         {
-            var complaint =
-                await _repository.GetComplaintByIdAsync(dto.ComplaintId);
+            if (!PrivilegedRoles.Contains(role))
+                throw new UnauthorizedAccessException("Not allowed.");
+
+            var complaint = await _repository.GetComplaintByIdAsync(dto.ComplaintId);
 
             if (complaint == null)
-                throw new Exception("Complaint not found");
+                throw new Exception("Complaint not found.");
 
-            complaint.AssignedTo = dto.AssignedTo;
+            complaint.AssignedTo = dto.AssignedTo.ToString();
+
+            await _repository.UpdateComplaintAsync(complaint);
+        }
+
+        // ===================== EDIT (ADMIN ONLY) =====================
+        public async Task<ComplaintResponseDTO?> EditComplaintAsync(
+            int id,
+            EditComplaintDTO dto)
+        {
+            var complaint = await _repository.GetComplaintByIdAsync(id);
+
+            if (complaint == null)
+                return null;
+
+            // Only update fields that are provided
+            if (!string.IsNullOrWhiteSpace(dto.Category))
+                complaint.Category = dto.Category;
+
+            if (!string.IsNullOrWhiteSpace(dto.Subject))
+                complaint.Subject = dto.Subject;
+
+            if (!string.IsNullOrWhiteSpace(dto.Description))
+                complaint.Description = dto.Description;
+
+            if (!string.IsNullOrWhiteSpace(dto.Priority))
+                complaint.Priority = dto.Priority;
+
+            if (!string.IsNullOrWhiteSpace(dto.Status))
+                complaint.Status = dto.Status;
+
+            if (!string.IsNullOrWhiteSpace(dto.ResolutionNotes))
+                complaint.ResolutionNotes = dto.ResolutionNotes;
 
             await _repository.UpdateComplaintAsync(complaint);
 
-            // Notify assigned person
-            await SendNotificationAsync(
-                employeeId: dto.AssignedTo.ToString(),
-                title: "Complaint Assigned to You",
-                message: $"Complaint {complaint.ComplaintNumber} has been assigned to you for investigation.",
-                type: "Complaint"
-            );
+            return Map(complaint);
         }
 
-        // ── Helpers ───────────────────────────────────────────────────────
-
-        private async Task SendNotificationAsync(
-            string employeeId, string title,
-            string message, string type)
+        // ===================== DELETE (ADMIN ONLY) =====================
+        public async Task<bool> DeleteComplaintAsync(int id)
         {
-            try
-            {
-                var client = _httpClientFactory
-                    .CreateClient("NotificationService");
-
-                var payload = JsonSerializer.Serialize(new
-                {
-                    employeeId,
-                    title,
-                    message,
-                    type
-                });
-
-                var content = new StringContent(
-                    payload, Encoding.UTF8, "application/json");
-
-                await client.PostAsync("api/Notification/create", content);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(
-                    $"[ComplaintService] Notification failed: {ex.Message}");
-            }
+            return await _repository.DeleteComplaintAsync(id);
         }
 
-        private ComplaintResponseDTO MapToResponse(Complaint x)
+        // ===================== MAPPER =====================
+        private ComplaintResponseDTO Map(Complaint x)
         {
             return new ComplaintResponseDTO
             {
                 Id = x.Id,
                 ComplaintNumber = x.ComplaintNumber,
-                // Mask employee ID if anonymous
-                EmployeeId = x.IsAnonymous ? null : x.EmployeeId,
+                UserId = x.IsAnonymous ? null : x.UserId,
                 Category = x.Category,
                 Subject = x.Subject,
+                Description = x.Description,
                 Priority = x.Priority,
                 Status = x.Status,
                 IsAnonymous = x.IsAnonymous,
@@ -175,11 +188,6 @@ namespace SheSecure.ComplaintService.Services
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt
             };
-        }
-
-        private string GenerateComplaintNumber()
-        {
-            return $"CMP-{DateTime.UtcNow.Ticks}";
         }
     }
 }

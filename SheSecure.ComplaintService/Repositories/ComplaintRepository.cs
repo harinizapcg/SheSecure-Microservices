@@ -17,9 +17,7 @@ namespace SheSecure.ComplaintService.Repositories
         public async Task<Complaint> CreateComplaintAsync(Complaint complaint)
         {
             _context.Complaints.Add(complaint);
-
             await _context.SaveChangesAsync();
-
             return complaint;
         }
 
@@ -28,24 +26,36 @@ namespace SheSecure.ComplaintService.Repositories
             return await _context.Complaints.ToListAsync();
         }
 
- 
-        public async Task<Complaint> GetComplaintByIdAsync(int id)
+        public async Task<Complaint?> GetComplaintByIdAsync(int id)
         {
             return await _context.Complaints.FindAsync(id);
         }
 
-        public async Task<List<Complaint>> GetComplaintsByEmployeeIdAsync(string employeeId)
+        // Fixed: was using x.EmployeeId which didn't exist — now uses x.UserId
+        public async Task<List<Complaint>> GetComplaintsByUserIdAsync(string userId)
         {
             return await _context.Complaints
-                .Where(x => x.EmployeeId == employeeId)
+                .Where(x => x.UserId == userId)
                 .ToListAsync();
         }
 
         public async Task UpdateComplaintAsync(Complaint complaint)
         {
+            complaint.UpdatedAt = DateTime.UtcNow;
             _context.Complaints.Update(complaint);
-
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteComplaintAsync(int id)
+        {
+            var complaint = await _context.Complaints.FindAsync(id);
+
+            if (complaint == null)
+                return false;
+
+            _context.Complaints.Remove(complaint);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

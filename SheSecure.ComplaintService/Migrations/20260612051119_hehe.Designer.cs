@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SheSecure.ComplaintService.Data;
 
@@ -11,9 +12,11 @@ using SheSecure.ComplaintService.Data;
 namespace SheSecure.ComplaintService.Migrations
 {
     [DbContext(typeof(ComplaintDbContext))]
-    partial class ComplaintDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612051119_hehe")]
+    partial class hehe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,8 @@ namespace SheSecure.ComplaintService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AssignedTo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -49,6 +51,10 @@ namespace SheSecure.ComplaintService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsAnonymous")
                         .HasColumnType("bit");
 
@@ -57,7 +63,6 @@ namespace SheSecure.ComplaintService.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ResolutionNotes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -68,7 +73,7 @@ namespace SheSecure.ComplaintService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
@@ -200,12 +205,17 @@ namespace SheSecure.ComplaintService.Migrations
             modelBuilder.Entity("SheSecure.ComplaintService.Entities.ComplaintFile", b =>
                 {
                     b.HasOne("SheSecure.ComplaintService.Entities.Complaint", "Complaint")
-                        .WithMany()
+                        .WithMany("ComplaintFiles")
                         .HasForeignKey("ComplaintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Complaint");
+                });
+
+            modelBuilder.Entity("SheSecure.ComplaintService.Entities.Complaint", b =>
+                {
+                    b.Navigation("ComplaintFiles");
                 });
 #pragma warning restore 612, 618
         }

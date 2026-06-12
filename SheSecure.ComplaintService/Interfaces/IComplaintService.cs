@@ -5,16 +5,21 @@ namespace SheSecure.ComplaintService.Interfaces
 {
     public interface IComplaintService
     {
-        Task<ComplaintResponseDTO> CreateComplaintAsync(
-            CreateComplaintDTO dto,
-            string employeeId);
-        Task<List<ComplaintResponseDTO>> GetMyComplaintsAsync(string employeeId);
-        Task<List<ComplaintResponseDTO>> GetAllComplaintsAsync();
+        Task<ComplaintResponseDTO> CreateComplaintAsync(CreateComplaintDTO dto, string userId);
 
-        Task<ComplaintResponseDTO> GetComplaintByIdAsync(int id);
+        Task<List<ComplaintResponseDTO>> GetAllComplaintsAsync(string role, string userId);
 
-        Task UpdateComplaintStatusAsync(UpdateComplaintStatusDTO dto);
+        Task<List<ComplaintResponseDTO>> GetMyComplaintsAsync(string userId);
 
-        Task AssignComplaintAsync(AssignComplaintDTO dto);
+        Task<ComplaintResponseDTO?> GetComplaintByIdAsync(int id, string role, string userId);
+
+        Task UpdateComplaintStatusAsync(UpdateComplaintStatusDTO dto, string role);
+
+        Task AssignComplaintAsync(AssignComplaintDTO dto, string role);
+
+        // Admin only
+        Task<ComplaintResponseDTO?> EditComplaintAsync(int id, EditComplaintDTO dto);
+
+        Task<bool> DeleteComplaintAsync(int id);
     }
 }
