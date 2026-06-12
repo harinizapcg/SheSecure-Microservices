@@ -3,21 +3,25 @@ using SheSecure.Safety_WellnessService.DTOs;
 using SheSecure.Safety_WellnessService.Entities;
 using SheSecure.Safety_WellnessService.Interfaces;
 using SheSecure.Safety_WellnessService.Jobs;
+using System.Text;
+using System.Text.Json;
 
 namespace SheSecure.Safety_WellnessService.Services
 {
     public class SafeReachService : ISafeReachService
     {
         private readonly ISafeReachRepository _repository;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public SafeReachService(
-            ISafeReachRepository repository)
+            ISafeReachRepository repository,
+            IHttpClientFactory httpClientFactory)
         {
             _repository = repository;
+            _httpClientFactory = httpClientFactory;
         }
 
-        public async Task CreateAsync(
-            CreateSafeReachDTO dto)
+        public async Task CreateAsync(CreateSafeReachDTO dto)
         {
             var check = new SafeReachCheck
             {
@@ -68,16 +72,12 @@ namespace SheSecure.Safety_WellnessService.Services
             }
         }
 
-        public async Task AcknowledgeAsync(
-            AcknowledgeSafeReachDTO dto)
+        public async Task AcknowledgeAsync(AcknowledgeSafeReachDTO dto)
         {
-            var check =
-                await _repository.GetByIdAsync(
-                    dto.SafeReachId);
+            var check = await _repository.GetByIdAsync(dto.SafeReachId);
 
             if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
+                throw new Exception("Safe Reach record not found");
 
             check.IsAcknowledged = true;
             check.AcknowledgedAt = DateTime.UtcNow;
@@ -88,19 +88,44 @@ namespace SheSecure.Safety_WellnessService.Services
 
         public async Task EscalateAsync(int id)
         {
-            var check =
-                await _repository.GetByIdAsync(id);
+            var check = await _repository.GetByIdAsync(id);
 
             if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
+                throw new Exception("Safe Reach record not found");
 
             if (check.IsAcknowledged)
-                throw new Exception(
-                    "Employee already acknowledged");
+                throw new Exception("Employee already acknowledged");
 
             check.Status = "Escalated";
             await _repository.UpdateAsync(check);
+
+            var message =
+                $"Employee ID {check.EmployeeId} failed to confirm safe arrival. " +
+                $"Manual escalation triggered. Please review immediately.";
+
+            // Notify HR
+            await SendNotificationAsync(
+                employeeId: "2",
+                title: "SafeReach Escalation - HR Action Required",
+                message: message,
+                type: "Emergency"
+            );
+
+            // Notify Security
+            await SendNotificationAsync(
+                employeeId: "3",
+                title: "SafeReach Escalation - Security Alert",
+                message: message,
+                type: "Emergency"
+            );
+
+            // Notify Admin
+            await SendNotificationAsync(
+                employeeId: "1",
+                title: "SafeReach Escalation - Admin Notice",
+                message: message,
+                type: "Emergency"
+            );
         }
 
         public async Task<object> GetAllAsync()
@@ -108,14 +133,43 @@ namespace SheSecure.Safety_WellnessService.Services
 
         public async Task<object> GetByIdAsync(int id)
         {
-            var check =
-                await _repository.GetByIdAsync(id);
+            var check = await _repository.GetByIdAsync(id);
 
             if (check == null)
-                throw new Exception(
-                    "Safe Reach record not found");
+                throw new Exception("Safe Reach record not found");
 
             return check;
+        }
+
+        // ── Helper ────────────────────────────────────────────────────────
+
+        private async Task SendNotificationAsync(
+            string employeeId, string title,
+            string message, string type)
+        {
+            try
+            {
+                var client = _httpClientFactory
+                    .CreateClient("NotificationService");
+
+                var payload = JsonSerializer.Serialize(new
+                {
+                    employeeId,
+                    title,
+                    message,
+                    type
+                });
+
+                var content = new StringContent(
+                    payload, Encoding.UTF8, "application/json");
+
+                await client.PostAsync("api/Notification/create", content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"[SafeReachService] Notification failed: {ex.Message}");
+            }
         }
     }
 }

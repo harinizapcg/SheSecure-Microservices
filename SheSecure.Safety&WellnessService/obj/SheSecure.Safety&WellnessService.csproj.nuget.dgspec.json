@@ -62,6 +62,14 @@
               "target": "Package",
               "version": "[1.8.23, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.17.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.28, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -77,6 +85,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.27, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[8.0.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

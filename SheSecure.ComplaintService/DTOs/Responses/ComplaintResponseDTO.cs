@@ -6,10 +6,25 @@
 
         public string ComplaintNumber { get; set; }
 
+        // Null when IsAnonymous = true
+        public string? EmployeeId { get; set; }
+
+        public string Category { get; set; }
+
         public string Subject { get; set; }
+
+        public string Priority { get; set; }
 
         public string Status { get; set; }
 
+        public bool IsAnonymous { get; set; }
+
+        public int? AssignedTo { get; set; }
+
+        public string? ResolutionNotes { get; set; }
+
         public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }

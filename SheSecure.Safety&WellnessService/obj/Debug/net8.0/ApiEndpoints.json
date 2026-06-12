@@ -297,6 +297,27 @@
   },
   {
     "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "ApproveRequest",
+    "RelativePath": "api/WellnessRequest/approve/{requestId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "managerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
     "Method": "CreateRequest",
     "RelativePath": "api/WellnessRequest/create",
     "HttpMethod": "POST",
@@ -307,6 +328,32 @@
         "Name": "dto",
         "Type": "SheSecure.WellnessSafetyService.DTOs.Requests.CreateWellnessRequestDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.WellnessSafetyService.Controllers.WellnessRequestController",
+    "Method": "RejectRequest",
+    "RelativePath": "api/WellnessRequest/reject/{requestId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "managerId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "reason",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

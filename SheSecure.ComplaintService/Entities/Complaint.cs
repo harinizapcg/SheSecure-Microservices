@@ -10,7 +10,7 @@ namespace SheSecure.ComplaintService.Entities
 
         public string ComplaintNumber { get; set; }
 
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public string Category { get; set; }
 

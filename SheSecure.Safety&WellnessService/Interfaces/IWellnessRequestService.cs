@@ -17,5 +17,9 @@ namespace SheSecure.WellnessSafetyService.Interfaces
 
         Task UpdateStatusAsync(
             UpdateWellnessRequestStatusDTO dto);
+
+        Task ApproveRequestAsync(int requestId, int managerId);
+
+        Task RejectRequestAsync(int requestId, int managerId, string reason);
     }
 }

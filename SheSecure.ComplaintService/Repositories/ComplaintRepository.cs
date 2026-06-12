@@ -28,10 +28,17 @@ namespace SheSecure.ComplaintService.Repositories
             return await _context.Complaints.ToListAsync();
         }
 
+ 
         public async Task<Complaint> GetComplaintByIdAsync(int id)
         {
+            return await _context.Complaints.FindAsync(id);
+        }
+
+        public async Task<List<Complaint>> GetComplaintsByEmployeeIdAsync(string employeeId)
+        {
             return await _context.Complaints
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Where(x => x.EmployeeId == employeeId)
+                .ToListAsync();
         }
 
         public async Task UpdateComplaintAsync(Complaint complaint)

@@ -108,19 +108,27 @@ namespace SheSecure.AuthService.Controllers
                 await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
+{
+    new Claim(ClaimTypes.Name, user.UserName),
 
-                new Claim(JwtRegisteredClaimNames.Jti,
-                    Guid.NewGuid().ToString())
-            };
+    new Claim(JwtRegisteredClaimNames.Jti,
+        Guid.NewGuid().ToString())
+};
+
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             // ADD ROLE CLAIMS
-            foreach (var role in userRoles)
-            {
-                authClaims.Add(
-                    new Claim(ClaimTypes.Role, role));
-            }
+            //foreach (var role in userRoles)
+            //{
+            //    authClaims.Add(
+            //        new Claim(ClaimTypes.Role, role));
+            //}
 
             var authSigningKey =
                 new SymmetricSecurityKey(

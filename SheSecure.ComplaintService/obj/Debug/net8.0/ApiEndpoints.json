@@ -59,6 +59,16 @@
   },
   {
     "ContainingType": "SheSecure.ComplaintService.Controllers.ComplaintController",
+    "Method": "GetMyComplaints",
+    "RelativePath": "api/Complaint/my",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SheSecure.ComplaintService.Controllers.ComplaintController",
     "Method": "UpdateStatus",
     "RelativePath": "api/Complaint/status",
     "HttpMethod": "PUT",

@@ -96,7 +96,10 @@ namespace SheSecure.AuthService
                         }
                     });
             });
-
+            Console.WriteLine("JWT KEY (ComplaintService):");
+            Console.WriteLine(builder.Configuration["Jwt:Key"]);
+            Console.WriteLine("ISSUER: " + builder.Configuration["Jwt:Issuer"]);
+            Console.WriteLine("AUDIENCE: " + builder.Configuration["Jwt:Audience"]);
             var app = builder.Build();
 
             // Swagger

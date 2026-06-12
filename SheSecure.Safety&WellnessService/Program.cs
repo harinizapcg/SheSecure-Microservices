@@ -8,6 +8,9 @@ using SheSecure.Safety_WellnessService.Repositories;
 using SheSecure.Safety_WellnessService.Services;
 using SheSecure.WellnessSafetyService.Interfaces;
 using SheSecure.WellnessSafetyService.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +18,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Database
 builder.Services.AddDbContext<WellnessDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Hangfire
 builder.Services.AddHangfire(config => config
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
     .UseSimpleAssemblyNameTypeSerializer()
@@ -36,17 +41,30 @@ builder.Services.AddHangfire(config => config
 
 builder.Services.AddHangfireServer();
 
+// HttpClient for NotificationService
+// SSL bypass for localhost dev only
 builder.Services.AddHttpClient("NotificationService", c =>
-    c.BaseAddress = new Uri("https://localhost:7179/"));
+    c.BaseAddress = new Uri("https://localhost:7179/"))
+    .ConfigurePrimaryHttpMessageHandler(() =>
+        new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        });
 
+// Repositories
 builder.Services.AddScoped<ISafeReachRepository, SafeReachRepository>();
-builder.Services.AddScoped<ISafeReachService, SafeReachService>();
 builder.Services.AddScoped<IWellnessRequestRepository, WellnessRequestRepository>();
-builder.Services.AddScoped<IWellnessRequestService, WellnessRequestService>();
 builder.Services.AddScoped<IEmergencyAlertRepository, EmergencyAlertRepository>();
-builder.Services.AddScoped<IEmergencyAlertService, EmergencyAlertService>();
 builder.Services.AddScoped<IMoodLogRepository, MoodLogRepository>();
+
+// Services
+builder.Services.AddScoped<ISafeReachService, SafeReachService>();
+builder.Services.AddScoped<IWellnessRequestService, WellnessRequestService>();
+builder.Services.AddScoped<IEmergencyAlertService, EmergencyAlertService>();
 builder.Services.AddScoped<IMoodLogService, MoodLogService>();
+
+// Hangfire job
 builder.Services.AddScoped<SafeReachReminderJob>();
 
 var app = builder.Build();

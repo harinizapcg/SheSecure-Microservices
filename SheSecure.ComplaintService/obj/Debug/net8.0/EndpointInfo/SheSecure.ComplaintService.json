@@ -71,6 +71,18 @@
         }
       }
     },
+    "/api/Complaint/my": {
+      "get": {
+        "tags": [
+          "Complaint"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Complaint/status": {
       "put": {
         "tags": [
@@ -390,6 +402,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter: Bearer {your JWT token}",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

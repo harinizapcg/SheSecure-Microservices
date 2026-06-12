@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SheSecure.ComplaintService.DTOs.Requests;
 using SheSecure.ComplaintService.Interfaces;
-
+using System.Security.Claims;
 namespace SheSecure.ComplaintService.Controllers
 {
     [ApiController]
@@ -17,11 +17,15 @@ namespace SheSecure.ComplaintService.Controllers
         }
 
         [HttpPost("create")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateComplaint(
-            [FromBody] CreateComplaintDTO dto)
+    [FromBody] CreateComplaintDTO dto)
         {
-            int employeeId = 1;
+            var employeeId =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(employeeId))
+                return Unauthorized();
 
             var result = await _service.CreateComplaintAsync(
                 dto,
@@ -31,7 +35,7 @@ namespace SheSecure.ComplaintService.Controllers
         }
 
         [HttpGet("all")]
-       // [Authorize(Roles = "HR,Admin")]
+        [Authorize(Roles = "HR,Admin")]
         public async Task<IActionResult> GetAllComplaints()
         {
             var result = await _service.GetAllComplaintsAsync();
@@ -40,16 +44,30 @@ namespace SheSecure.ComplaintService.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetComplaintById(int id)
         {
             var result = await _service.GetComplaintByIdAsync(id);
 
             return Ok(result);
         }
+        [HttpGet("my")]
+        [Authorize]
+        public async Task<IActionResult> GetMyComplaints()
+        {
+            var employeeId =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (string.IsNullOrEmpty(employeeId))
+                return Unauthorized();
+
+            var result =
+                await _service.GetMyComplaintsAsync(employeeId);
+
+            return Ok(result);
+        }
         [HttpPut("status")]
-        //[Authorize(Roles = "HR,Admin")]
+        [Authorize(Roles = "HR,Admin")]
         public async Task<IActionResult> UpdateStatus(
             [FromBody] UpdateComplaintStatusDTO dto)
         {
@@ -59,7 +77,7 @@ namespace SheSecure.ComplaintService.Controllers
         }
 
         [HttpPut("assign")]
-        //[Authorize(Roles = "HR,Admin")]
+        [Authorize(Roles = "HR,Admin")]
         public async Task<IActionResult> AssignComplaint(
             [FromBody] AssignComplaintDTO dto)
         {

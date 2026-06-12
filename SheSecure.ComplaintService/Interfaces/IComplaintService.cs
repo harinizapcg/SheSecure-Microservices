@@ -7,8 +7,8 @@ namespace SheSecure.ComplaintService.Interfaces
     {
         Task<ComplaintResponseDTO> CreateComplaintAsync(
             CreateComplaintDTO dto,
-            int employeeId);
-
+            string employeeId);
+        Task<List<ComplaintResponseDTO>> GetMyComplaintsAsync(string employeeId);
         Task<List<ComplaintResponseDTO>> GetAllComplaintsAsync();
 
         Task<ComplaintResponseDTO> GetComplaintByIdAsync(int id);
